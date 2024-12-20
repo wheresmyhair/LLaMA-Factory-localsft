@@ -46,8 +46,8 @@ def create_top() -> Dict[str, "Component"]:
         # finetuning_type = gr.Dropdown(choices=METHODS, value="lora", scale=1)
         finetuning_type = gr.Textbox(value="lora", scale=1, interactive=False)
         # checkpoint_path = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=6)
-        checkpoint_path = list_checkpoints(model_name, finetuning_type)
-        refresh_ckpt_btn = gr.Button(text="刷新训练文件列表", scale=1)
+        checkpoint_path = list_checkpoints(model_name.value, finetuning_type)
+        refresh_ckpt_btn = gr.Button(value="刷新训练文件列表", scale=1)
 
     with gr.Row():
         quantization_bit = gr.Dropdown(choices=["none", "8", "4"], value="none", allow_custom_value=True, scale=2)

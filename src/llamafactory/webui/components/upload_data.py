@@ -63,8 +63,8 @@ def is_valid_json(file_path):
         for element in data:
             if not isinstance(element, dict):
                 return False, "列表中的每个元素必须是一个字典。"
-            if not all(key in element for key in ["instruction", "output"]):
-                return False, "每个字典必须包含 'instruction' 和 'output' 字段。"
+            if not all(key in element for key in ["instruction", "input", "output"]):
+                return False, "每个字典必须包含 'instruction', 'input' 和 'output' 字段。"
 
         return True, "JSON 文件内容验证通过。"
     except Exception as e:
