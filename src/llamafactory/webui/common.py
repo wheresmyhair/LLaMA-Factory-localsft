@@ -27,7 +27,7 @@ from ..extras.constants import (
     PEFT_METHODS,
     STAGES_USE_PAIR_DATA,
     SUPPORTED_MODELS,
-    TRAINING_STAGES,
+    # TRAINING_STAGES,
     VISION_MODELS,
     DownloadSource,
 )
@@ -183,11 +183,14 @@ def load_dataset_info(dataset_dir: str) -> Dict[str, Dict[str, Any]]:
         return {}
 
 
-def list_datasets(dataset_dir: str = None, training_stage: str = list(TRAINING_STAGES.keys())[0]) -> "gr.Dropdown":
+# def list_datasets(dataset_dir: str = None, training_stage: str = list(TRAINING_STAGES.keys())[0]) -> "gr.Dropdown":
+def list_datasets(dataset_dir: str = None, training_stage: str = 'sft') -> "gr.Dropdown":
     r"""
     Lists all available datasets in the dataset dir for the training stage.
     """
     dataset_info = load_dataset_info(dataset_dir if dataset_dir is not None else DEFAULT_DATA_DIR)
-    ranking = TRAINING_STAGES[training_stage] in STAGES_USE_PAIR_DATA
+    # ranking = TRAINING_STAGES[training_stage] in STAGES_USE_PAIR_DATA
+    ranking = 'sft' in STAGES_USE_PAIR_DATA
     datasets = [k for k, v in dataset_info.items() if v.get("ranking", False) == ranking]
-    return gr.Dropdown(choices=datasets)
+    # return gr.Dropdown(choices=datasets)
+    return gr.Dropdown(choices=datasets, multiselect=True, allow_custom_value=True, scale=4)

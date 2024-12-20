@@ -20,7 +20,8 @@ from typing import TYPE_CHECKING, Any, Dict, Generator, Optional
 
 from transformers.trainer import TRAINING_ARGS_NAME
 
-from ..extras.constants import LLAMABOARD_CONFIG, PEFT_METHODS, TRAINING_STAGES
+# from ..extras.constants import LLAMABOARD_CONFIG, PEFT_METHODS, TRAINING_STAGES
+from ..extras.constants import LLAMABOARD_CONFIG, PEFT_METHODS
 from ..extras.misc import is_gpu_or_npu_available, torch_gc
 from ..extras.packages import is_gradio_available, is_transformers_version_equal_to_4_46
 from .common import DEFAULT_CACHE_DIR, DEFAULT_CONFIG_DIR, QUANTIZATION_BITS, get_save_dir, load_config
@@ -84,7 +85,8 @@ class Runner:
             except json.JSONDecodeError:
                 return ALERTS["err_json_schema"][lang]
 
-            stage = TRAINING_STAGES[get("train.training_stage")]
+            # stage = TRAINING_STAGES[get("train.training_stage")]
+            stage = 'sft'
             if stage == "ppo" and not get("train.reward_model"):
                 return ALERTS["err_no_reward_model"][lang]
         else:
@@ -112,7 +114,8 @@ class Runner:
         user_config = load_config()
 
         args = dict(
-            stage=TRAINING_STAGES[get("train.training_stage")],
+            # stage=TRAINING_STAGES[get("train.training_stage")],
+            stage='sft',
             do_train=True,
             model_name_or_path=get("top.model_path"),
             cache_dir=user_config.get("cache_dir", None),

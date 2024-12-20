@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING, Dict
 
 from transformers.trainer_utils import SchedulerType
 
-from ...extras.constants import TRAINING_STAGES
+# from ...extras.constants import TRAINING_STAGES
 from ...extras.misc import get_device_count
 from ...extras.packages import is_gradio_available
 from ..common import DEFAULT_DATA_DIR, list_checkpoints, list_datasets
@@ -39,11 +39,13 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
     elem_dict = dict()
 
     with gr.Row():
-        training_stage = gr.Dropdown(
-            choices=list(TRAINING_STAGES.keys()), value=list(TRAINING_STAGES.keys())[0], scale=1
-        )
+        # training_stage = gr.Dropdown(
+        #     choices=list(TRAINING_STAGES.keys()), value=list(TRAINING_STAGES.keys())[0], scale=1
+        # )
+        training_stage = 'sft'
         dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=1)
-        dataset = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=4)
+        # dataset = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=4)
+        dataset = list_datasets(dataset_dir='/lmf/data', training_stage='sft')
         preview_elems = create_preview_box(dataset_dir, dataset)
 
     input_elems.update({training_stage, dataset_dir, dataset})
@@ -207,7 +209,8 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
         )
     )
 
-    with gr.Accordion(open=False) as rlhf_tab:
+    # with gr.Accordion(open=False) as rlhf_tab:
+    with gr.Accordion(open=False, visible=False) as rlhf_tab:
         with gr.Row():
             pref_beta = gr.Slider(minimum=0, maximum=1, value=0.1, step=0.01)
             pref_ftx = gr.Slider(minimum=0, maximum=10, value=0, step=0.01)
@@ -230,7 +233,8 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
         )
     )
 
-    with gr.Accordion(open=False) as galore_tab:
+    # with gr.Accordion(open=False) as galore_tab:
+    with gr.Accordion(open=False, visible=False) as galore_tab:
         with gr.Row():
             use_galore = gr.Checkbox()
             galore_rank = gr.Slider(minimum=1, maximum=1024, value=16, step=1)
@@ -250,7 +254,8 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
         )
     )
 
-    with gr.Accordion(open=False) as badam_tab:
+    # with gr.Accordion(open=False) as badam_tab:
+    with gr.Accordion(open=False, visible=False) as badam_tab:
         with gr.Row():
             use_badam = gr.Checkbox()
             badam_mode = gr.Dropdown(choices=["layer", "ratio"], value="layer")
@@ -335,7 +340,7 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
         engine.runner.load_args, [lang, config_path], list(input_elems) + [output_box], concurrency_limit=None
     )
 
-    dataset.focus(list_datasets, [dataset_dir, training_stage], [dataset], queue=False)
+    # dataset.focus(list_datasets, [dataset_dir, training_stage], [dataset], queue=False)
     training_stage.change(change_stage, [training_stage], [dataset, packing], queue=False)
     reward_model.focus(list_checkpoints, [model_name, finetuning_type], [reward_model], queue=False)
     model_name.change(list_output_dirs, [model_name, finetuning_type, current_time], [output_dir], queue=False)

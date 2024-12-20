@@ -22,7 +22,8 @@ import psutil
 from transformers.trainer_utils import get_last_checkpoint
 from yaml import safe_dump, safe_load
 
-from ..extras.constants import PEFT_METHODS, RUNNING_LOG, TRAINER_LOG, TRAINING_ARGS, TRAINING_STAGES
+# from ..extras.constants import PEFT_METHODS, RUNNING_LOG, TRAINER_LOG, TRAINING_ARGS, TRAINING_STAGES
+from ..extras.constants import PEFT_METHODS, RUNNING_LOG, TRAINER_LOG, TRAINING_ARGS
 from ..extras.packages import is_gradio_available, is_matplotlib_available
 from ..extras.ploting import gen_loss_plot
 from ..model import QuantizationMethod
@@ -73,11 +74,13 @@ def can_quantize_to(quantization_method: str) -> "gr.Dropdown":
     return gr.Dropdown(choices=available_bits)
 
 
-def change_stage(training_stage: str = list(TRAINING_STAGES.keys())[0]) -> Tuple[List[str], bool]:
+# def change_stage(training_stage: str = list(TRAINING_STAGES.keys())[0]) -> Tuple[List[str], bool]:
+def change_stage(training_stage: str = 'sft') -> Tuple[List[str], bool]:
     r"""
     Modifys states after changing the training stage.
     """
-    return [], TRAINING_STAGES[training_stage] == "pt"
+    # return [], TRAINING_STAGES[training_stage] == "pt"
+    return [], 'sft' == "pt"
 
 
 def check_json_schema(text: str, lang: str) -> None:
