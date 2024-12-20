@@ -43,7 +43,7 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
         #     choices=list(TRAINING_STAGES.keys()), value=list(TRAINING_STAGES.keys())[0], scale=1
         # )
         training_stage = gr.Dropdown(choices=['sft'], value='sft', scale=1, visible=False)
-        dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=1)
+        dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=1, interactive=False)
         # dataset = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=4)
         dataset = list_datasets(dataset_dir='/lmf/data', training_stage='sft')
         preview_elems = create_preview_box(dataset_dir, dataset)
