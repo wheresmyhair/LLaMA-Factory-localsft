@@ -24,6 +24,7 @@ from .components import (
     create_infer_tab,
     create_top,
     create_train_tab,
+    create_upload_tab,
 )
 from .css import CSS
 from .engine import Engine
@@ -48,6 +49,9 @@ def create_ui(demo_mode: bool = False) -> "gr.Blocks":
 
         engine.manager.add_elems("top", create_top())
         lang: "gr.Dropdown" = engine.manager.get_elem_by_id("top.lang")
+
+        with gr.Tab("Upload"):
+            engine.manager.add_elems("upload_data", create_upload_tab(engine))
 
         with gr.Tab("Train"):
             engine.manager.add_elems("train", create_train_tab(engine))
