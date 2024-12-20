@@ -33,9 +33,14 @@ def create_eval_tab(engine: "Engine") -> Dict[str, "Component"]:
     input_elems = engine.manager.get_base_elems()
     elem_dict = dict()
 
+    # with gr.Row():
+    #     dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=2)
+    #     dataset = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=4)
+    #     preview_elems = create_preview_box(dataset_dir, dataset)
     with gr.Row():
-        dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=2)
-        dataset = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=4)
+        dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=2, visible=False)
+        dataset = list_datasets(dataset_dir=DEFAULT_DATA_DIR, training_stage='sft')
+        refresh_dataset_btn = gr.Button(value="刷新数据集列表", scale=1)
         preview_elems = create_preview_box(dataset_dir, dataset)
 
     input_elems.update({dataset_dir, dataset})
@@ -88,6 +93,7 @@ def create_eval_tab(engine: "Engine") -> Dict[str, "Component"]:
     stop_btn.click(engine.runner.set_abort)
     resume_btn.change(engine.runner.monitor, outputs=output_elems, concurrency_limit=None)
 
-    dataset.focus(list_datasets, [dataset_dir], [dataset], queue=False)
+    # dataset.focus(list_datasets, [dataset_dir], [dataset], queue=False)
+    refresh_dataset_btn.click(list_datasets, [dataset_dir], [dataset], queue=False)
 
     return elem_dict
