@@ -161,10 +161,14 @@ def list_checkpoints(model_name: str, finetuning_type: str) -> "gr.Dropdown":
                 ):
                     checkpoints.append(checkpoint)
 
+    # if finetuning_type in PEFT_METHODS:
+    #     return gr.Dropdown(value=[], choices=checkpoints, multiselect=True)
+    # else:
+    #     return gr.Dropdown(value=None, choices=checkpoints, multiselect=False)
     if finetuning_type in PEFT_METHODS:
-        return gr.Dropdown(value=[], choices=checkpoints, multiselect=True)
+        return gr.Dropdown(value=[], choices=checkpoints, multiselect=True, allow_custom_value=False, scale=6)
     else:
-        return gr.Dropdown(value=None, choices=checkpoints, multiselect=False)
+        return gr.Dropdown(value=None, choices=checkpoints, multiselect=False, allow_custom_value=False, scale=6)
 
 
 def load_dataset_info(dataset_dir: str) -> Dict[str, Dict[str, Any]]:
