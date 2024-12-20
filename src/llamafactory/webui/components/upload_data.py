@@ -36,7 +36,7 @@ def upload_json(file, dataset_name):
 
         target_path = os.path.join(target_dir, dataset_name+".json")
         shutil.move(file.name, target_path)
-        update_dataset_info(DEFAULT_DATA_DIR)
+        update_dataset_info(DEFAULT_DATA_DIR, dataset_name, target_path)
         return f"文件已成功上传到 {target_path}"
     except Exception as e:
         return f"文件上传失败: {str(e)}"
@@ -79,10 +79,12 @@ def update_dataset_info(dataset_dir, dataset_name, dataset_file_path):
 
     
 def create_upload_tab(engine: 'Engine'):
+    output = gr.Error()
     with gr.Row():
         file = gr.File(label="文件", file_types=[".json"])
         dataset_name = gr.Textbox(label="数据集名称", placeholder="请输入数据集名称（仅支持英文字母、下划线、数字）")
         upload_btn = gr.Button("上传")
-        output = gr.Textbox(readonly=True)
         
-        upload_btn.click(upload_json, [file, dataset_name], outputs=output)
+    upload_btn.click(upload_json, [file, dataset_name], outputs=output)
+        
+    return dict() # no need to return any element here
