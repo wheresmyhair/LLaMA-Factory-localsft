@@ -40,9 +40,6 @@ def next_page(page_index: int, total_num: int) -> int:
 
 
 def can_preview(dataset_dir: str, dataset: list) -> "gr.Button":
-    print('can_preview')
-    print(dataset_dir)
-    print(dataset)
     try:
         with open(os.path.join(dataset_dir, DATA_CONFIG), encoding="utf-8") as f:
             dataset_info = json.load(f)
@@ -70,6 +67,9 @@ def _load_data_file(file_path: str) -> List[Any]:
 
 
 def get_preview(dataset_dir: str, dataset: list, page_index: int) -> Tuple[int, list, "gr.Column"]:
+    if len(dataset) == 0:
+        gr.Error("请先选择一个数据集。")
+    
     with open(os.path.join(dataset_dir, DATA_CONFIG), encoding="utf-8") as f:
         dataset_info = json.load(f)
 
@@ -85,7 +85,7 @@ def get_preview(dataset_dir: str, dataset: list, page_index: int) -> Tuple[int, 
 
 
 def create_preview_box(dataset_dir: "gr.Textbox", dataset: "gr.Dropdown") -> Dict[str, "Component"]:
-    data_preview_btn = gr.Button(interactive=False, scale=1)
+    data_preview_btn = gr.Button(interactive=True, scale=1)
     with gr.Column(visible=False, elem_classes="modal-box") as preview_box:
         with gr.Row():
             preview_count = gr.Number(value=0, interactive=False, precision=0)
@@ -99,9 +99,6 @@ def create_preview_box(dataset_dir: "gr.Textbox", dataset: "gr.Dropdown") -> Dic
         with gr.Row():
             preview_samples = gr.JSON()
 
-    dataset.change(can_preview, [dataset_dir, dataset], [data_preview_btn], queue=False).then(
-        lambda: 0, outputs=[page_index], queue=False
-    )
     data_preview_btn.click(
         get_preview, [dataset_dir, dataset, page_index], [preview_count, preview_samples, preview_box], queue=False
     )
