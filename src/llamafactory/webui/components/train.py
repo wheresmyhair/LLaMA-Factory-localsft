@@ -43,9 +43,10 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
         #     choices=list(TRAINING_STAGES.keys()), value=list(TRAINING_STAGES.keys())[0], scale=1
         # )
         training_stage = gr.Dropdown(choices=['sft'], value='sft', scale=1, visible=False)
-        dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=1, interactive=False)
+        dataset_dir = gr.Textbox(value=DEFAULT_DATA_DIR, scale=1, interactive=False, visible=False)
         # dataset = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=4)
         dataset = list_datasets(dataset_dir=DEFAULT_DATA_DIR, training_stage='sft')
+        refresh_dataset_btn = gr.Button(value="刷新数据集列表", scale=1)
         preview_elems = create_preview_box(dataset_dir, dataset)
 
     input_elems.update({training_stage, dataset_dir, dataset})
@@ -341,6 +342,7 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
     )
 
     # dataset.focus(list_datasets, [dataset_dir, training_stage], [dataset], queue=False)
+    refresh_dataset_btn.click(list_datasets, [dataset_dir, training_stage], [dataset], queue=False)
     training_stage.change(change_stage, [training_stage], [dataset, packing], queue=False)
     reward_model.focus(list_checkpoints, [model_name, finetuning_type], [reward_model], queue=False)
     model_name.change(list_output_dirs, [model_name, finetuning_type, current_time], [output_dir], queue=False)

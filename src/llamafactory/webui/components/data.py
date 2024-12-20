@@ -40,6 +40,9 @@ def next_page(page_index: int, total_num: int) -> int:
 
 
 def can_preview(dataset_dir: str, dataset: list) -> "gr.Button":
+    print('can_preview')
+    print(dataset_dir)
+    print(dataset)
     try:
         with open(os.path.join(dataset_dir, DATA_CONFIG), encoding="utf-8") as f:
             dataset_info = json.load(f)
