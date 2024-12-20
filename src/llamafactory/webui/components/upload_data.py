@@ -22,24 +22,28 @@ def upload_json(file, dataset_name):
 
     try:
         if not dataset_name:
-            return "请指定数据集的名字。"
+            gr.Error("请指定数据集的名字。")
+            return
 
         if not re.match(r'^[a-zA-Z][a-zA-Z0-9_]*$', dataset_name):
-            return "数据集名称只能包含英文、数字、下划线，并且不能以数字开头。"
+            gr.Error("数据集名称只能包含英文、数字、下划线，并且不能以数字开头。")
+            return
         
         if not is_valid_name(dataset_name):
-            return "数据集名称已存在。"
+            gr.Error("数据集名称已存在。")
+            return
         
         is_valid_dataset, msg = is_valid_json(file.name)
         if not is_valid_dataset:
-            return msg
+            gr.Error(msg)
+            return
 
         target_path = os.path.join(target_dir, dataset_name+".json")
         shutil.move(file.name, target_path)
         update_dataset_info(DEFAULT_DATA_DIR, dataset_name, target_path)
-        return f"文件已成功上传到 {target_path}"
+        gr.Info(f"文件已成功上传到 {target_path}")
     except Exception as e:
-        return f"文件上传失败: {str(e)}"
+        gr.Error(f"文件上传失败: {str(e)}")
     
 
 def is_valid_name(name: str) -> bool:
@@ -79,12 +83,11 @@ def update_dataset_info(dataset_dir, dataset_name, dataset_file_path):
 
     
 def create_upload_tab(engine: 'Engine'):
-    output = gr.Error()
     with gr.Row():
         file = gr.File(label="文件", file_types=[".json"])
         dataset_name = gr.Textbox(label="数据集名称", placeholder="请输入数据集名称（仅支持英文字母、下划线、数字）")
         upload_btn = gr.Button("上传")
         
-    upload_btn.click(upload_json, [file, dataset_name], outputs=output)
+    upload_btn.click(upload_json, [file, dataset_name])
         
     return dict() # no need to return any element here
