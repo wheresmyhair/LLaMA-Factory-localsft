@@ -30,9 +30,10 @@ if TYPE_CHECKING:
 
 
 def create_top() -> Dict[str, "Component"]:
-    available_models = list(SUPPORTED_MODELS.keys()) + ["Custom"]
+    # available_models = list(SUPPORTED_MODELS.keys()) + ["Custom"]
+    available_models = list(SUPPORTED_MODELS.keys())
 
-    lang = "zh"
+    lang = gr.Dropdown(choices=["zh"], value='zh', scale=1, visible=False)
     with gr.Row():
         model_name = gr.Dropdown(choices=available_models, scale=3)
         model_path = gr.Textbox(scale=3, interactive=False)
@@ -42,7 +43,8 @@ def create_top() -> Dict[str, "Component"]:
     #     model_path = gr.Textbox(scale=3)
 
     with gr.Row():
-        finetuning_type = gr.Dropdown(choices=METHODS, value="lora", scale=1)
+        # finetuning_type = gr.Dropdown(choices=METHODS, value="lora", scale=1)
+        finetuning_type = gr.Textbox(value="lora", scale=1, interactive=False)
         checkpoint_path = gr.Dropdown(multiselect=True, allow_custom_value=True, scale=6)
 
     with gr.Row():

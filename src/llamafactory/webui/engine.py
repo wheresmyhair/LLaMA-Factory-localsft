@@ -75,7 +75,8 @@ class Engine:
 
     def change_lang(self, lang: str):
         return {
-            elem: elem.__class__(**LOCALES[elem_name][lang])
+            # elem: elem.__class__(**LOCALES[elem_name][lang])
+            elem: elem.__class__(**LOCALES[elem_name]['zh'])
             for elem_name, elem in self.manager.get_elem_iter()
             if elem_name in LOCALES
         }

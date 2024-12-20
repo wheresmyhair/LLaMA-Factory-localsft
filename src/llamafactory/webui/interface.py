@@ -71,17 +71,19 @@ def create_ui(demo_mode: bool = False) -> "gr.Blocks":
 
 def create_web_demo() -> "gr.Blocks":
     engine = Engine(pure_chat=True)
+    engine.change_lang("zh")
 
     with gr.Blocks(title="Web Demo", css=CSS) as demo:
-        lang = gr.Dropdown(choices=["en", "ru", "zh", "ko"], scale=1)
+        # lang = gr.Dropdown(choices=["en", "ru", "zh", "ko"], scale=1)
+        lang = gr.Dropdown(choices=["ru"], value='zh', scale=1, visible=False)
         engine.manager.add_elems("top", dict(lang=lang))
 
         _, _, chat_elems = create_chat_box(engine, visible=True)
         engine.manager.add_elems("infer", chat_elems)
 
         demo.load(engine.resume, outputs=engine.manager.get_elem_list(), concurrency_limit=None)
-        lang.change(engine.change_lang, [lang], engine.manager.get_elem_list(), queue=False)
-        lang.input(save_config, inputs=[lang], queue=False)
+        # lang.change(engine.change_lang, [lang], engine.manager.get_elem_list(), queue=False)
+        # lang.input(save_config, inputs=[lang], queue=False)
 
     return demo
 

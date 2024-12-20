@@ -42,10 +42,10 @@ if is_gradio_available():
 logger = logging.get_logger(__name__)
 
 
-DEFAULT_CACHE_DIR = "cache"
-DEFAULT_CONFIG_DIR = "config"
-DEFAULT_DATA_DIR = "data"
-DEFAULT_SAVE_DIR = "saves"
+DEFAULT_CACHE_DIR = "/llm-finetune/cache"
+DEFAULT_CONFIG_DIR = "/llm-finetune/config"
+DEFAULT_DATA_DIR = "/llm-finetune/data"
+DEFAULT_SAVE_DIR = "/llm-finetune/saves"
 USER_CONFIG = "user_config.yaml"
 QUANTIZATION_BITS = ["8", "6", "5", "4", "3", "2", "1"]
 GPTQ_BITS = ["8", "4", "3", "2"]
